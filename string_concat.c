@@ -9,38 +9,49 @@
 #include <stdlib.h>
 #include <string.h>
 
-void mail_split(char* mail, char** user, char** domain) {
+
+
+char* mail_split(char* mail, char* user, char* domain) {
 	printf("entre a la funcion");
-	int mailLenght = sizeof(mail);
+	int mailLenght = strlen(mail);
 
 	int encontreArroba = 0;
 	printf("empiezo el for");
 	for (int i = 0; i < mailLenght; i++) {
 		if (mail[i] == '@') {
-//			encontreArroba = 1;
+			encontreArroba = 1;
+			printf("Arroba encontrada");
 		} else {
 			if (encontreArroba) {
-				*domain[i - sizeof(*user) - 1] = mail[i];
+				domain[i - strlen(user) - 1] = mail[i];
 			} else {
-				*user[i] = mail[i];
+				user[i] = mail[i];
 			}
-			printf("User = %s Domain = %s\n", *user, *domain);
+			printf("User = %s Domain = %s\n", user, domain);
 		}
-		printf("Arroba encontrada");
+
 	}
 
 }
 
+void dinamyc_mail_split(char* mail, char** user, char** domain) {
+	printf("entre a la funcion dinamyc");
+	mail_split(mail, *user, *domain);
+	printf("termine la funcion dinamyc");
+}
+
 int main(int argc, char** argv) {
 
-	printf("Log 0");
+	printf("Log 0%d",1);
 
 	char* mail = "nicofeldfeber@gmail.com";
+	printf("El tamaño del mail es: %d \n",strlen(mail));
+	char* user = malloc(strlen(mail));
+	char* domain = malloc(strlen(mail));
 
-	char* user;
-	char* domain;
+	dinamyc_mail_split(mail, &user, &domain);
 
-	mail_split(mail, &user, &domain);
+	printf("User final = %s Domain final = %s\n", user, domain);
 
 	return 0;
 }
